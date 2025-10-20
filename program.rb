@@ -1,36 +1,24 @@
 # Factoring-Based Bit Commitment Scheme
 
-require "securerandom"
-require "prime"
-
-def draw_random_prime(bit_length = 16)
-    loop do
-        random_bits = SecureRandom.random_number(2 ** bit_length)
-
-        # Ensure the random number is both significantly large and odd
-        bit_mask = (1 << (bit_length - 1)) | 1
-        random_bits |= bit_mask
-
-        return random_bits if Prime.prime?(random_bits)
-    end
-end
+require_relative "helper"
 
 # Alpha
 
 p = q = nil
 
-# Find p ≡ 1 (mod 4)
+# Find prime 𝑝 ≡ 1 (mod 4)
 loop do
     p = draw_random_prime(8)
     break if p % 4 == 1
 end
 
-# Find q ≡ 3 (mod 4)
+# Find prime 𝑞 ≡ 3 (mod 4)
 loop do
     q = draw_random_prime(8)
     break if q % 4 == 3
 end
 
+# Set semiprime 𝑛
 n = p * q
 
 puts "Alpha picks two large prime numbers, 𝑝 and 𝑞, such that one of the twain is congruent to 1 (modulo 4) and the other one is congruent to 3 (modulo 4)."
